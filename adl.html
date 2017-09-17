@@ -1,0 +1,44 @@
+<html>
+    
+    <head>
+        <title>PBI test</title>
+    </head>
+    
+    <body>
+    
+    </body>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+        crossorigin="anonymous"></script>
+        <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.0/js/adal.min.js"></script>
+        <!-- <script src="/app/util.js"></script>
+        <script src="/app/pbiapp.js"></script> -->
+    <script>
+        $(document).ready(function () {
+            //console.log(AuthenticationContext.context);
+            
+            //var context = AuthenticationContext.prototype._singletonInstance;
+            console.log('trying to login using ADL!');
+            window.config = {
+                tenant: 'osi365',
+                clientId: 'd624bfd0-6ed9-4bb4-8548-6d70c76854d4',
+                redirectUri: 'http://localhost:9002/return.html',
+                instance: 'https://login.windows.net/',
+                endpoints: 'https://analysis.windows.net/powerbi/api'
+            };
+            var context = new AuthenticationContext(window.config);
+            console.log(context);
+            var isCallback = authContext.isCallback(window.location.hash);
+            authContext.handleWindowCallback();
+            
+            if (isCallback && !authContext.getLoginError()) {
+                window.location = authContext._getItem(authContext.CONSTANTS.STORAGE.LOGIN_REQUEST);
+            }
+            
+            var user = authContext.getCachedUser();
+            if (!user) {
+                authContext.login();
+            }
+        });
+    </script>
+    
+    </html>
