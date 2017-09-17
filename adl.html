@@ -27,17 +27,18 @@
             };
             var context = new AuthenticationContext(window.config);
             console.log(context);
-            var isCallback = authContext.isCallback(window.location.hash);
-            authContext.handleWindowCallback();
+            context.login();
+            // var isCallback = authContext.isCallback(window.location.hash);
+            // authContext.handleWindowCallback();
             
-            if (isCallback && !authContext.getLoginError()) {
-                window.location = authContext._getItem(authContext.CONSTANTS.STORAGE.LOGIN_REQUEST);
-            }
+            // if (isCallback && !authContext.getLoginError()) {
+            //     window.location = authContext._getItem(authContext.CONSTANTS.STORAGE.LOGIN_REQUEST);
+            // }
             
-            var user = authContext.getCachedUser();
-            if (!user) {
-                authContext.login();
-            }
+            // var user = authContext.getCachedUser();
+            // if (!user) {
+            //     authContext.login();
+            // }
         });
     </script>
     
