@@ -7,16 +7,65 @@
     <body>
     
     </body>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
-        crossorigin="anonymous"></script>
-        <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.0/js/adal.min.js"></script>
-        <script src="/app/util.js"></script>
-        <script src="/app/pbiadl.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.0/js/adal.min.js"></script>        
     <script>
         
         $(document).ready(function () {
-            authLogin();
+            /// PowerBI SharePoint WebPart
+            /// By Martin Laukkanen - TPG The Project Group
+            /// Including some of http://paulryan.com.au/2015/unified-api-adal/
+            /// v0.2.20161016
+            "use strict";
+            
+            var config = {
+                tenant: 'orioninc.com',
+                clientId: 'd624bfd0-6ed9-4bb4-8548-6d70c76854d4',
+                redirectUri: 'http://localhost:9002/return.html',
+                postLogoutRedirectUri: window.location.origin,
+                prompt: 'none',
+                instance: 'https://login.windows.net/',
+                //endpoints: 'https://analysis.windows.net/powerbi/api',
+                resource: 'https://analysis.windows.net/powerbi/api',
+                cacheLocation: 'localStorage'
+            };
+    
+            var authContext = new AuthenticationContext(config);
+            // Check For & Handle Redirect From AAD After Login
+            var isCallback = authContext.isCallback(window.location.hash);
+            authContext.handleWindowCallback();
+            if (isCallback && !authContext.getLoginError()) {
+                window.location = authContext._getItem(authContext.CONSTANTS.STORAGE.LOGIN_REQUEST);
+            }
+    
+            // If not logged in force login
+            var user = authContext.getCachedUser(config.clientId);
+            console.log('user:');
+            console.log(user);
+            if (!user) {
+                authContext.login();
+            }
+    
+            // Acquire token for resource.
+            authContext.acquireToken(config.resource, function (error, token) {
+                // Handle ADAL Errors.
+                if (error || !token) {
+                    //if it fails with error AADSTS50058 which is caused due to how browser handles cookie
+                    //then force user to go to login page again.
+                    if(("" + error).indexOf("AADSTS50058") >= 0) {
+                        authContext.login();
+                    } else {
+                        console.log('ADAL error occurred: ' + error);
+                        return;
+                    }
+                }
+    
+                console.log(token);
+                // Store our token
+                config.authToken = token;    
+            });
         });
+    
     </script>
     
     </html>

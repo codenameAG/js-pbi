@@ -1,0 +1,17 @@
+body{
+    font-size: 11pt;
+}
+li{
+    cursor: pointer;
+    cursor: hand;
+}
+iframe{
+    width: 100%;
+    border: 0;
+    frameborder:0;
+    height: 700px;
+}
+.loggedUser{
+    align: right;
+    font-weight: bold;            
+}
