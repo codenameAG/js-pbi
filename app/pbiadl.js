@@ -1,7 +1,7 @@
 window.config = {
     tenant: 'orioninc.com',
     clientId: 'd624bfd0-6ed9-4bb4-8548-6d70c76854d4',
-    redirectUri: 'https://powerbijsembed.cloudapp.net/return.html',
+    redirectUri: 'http://powerbijsembed.azurewebsites.net/return.html',
     postLogoutRedirectUri: window.location.origin,
     prompt: 'none',
     instance: 'https://login.windows.net/',
